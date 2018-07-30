@@ -74,6 +74,7 @@ public class Teste1 {
     
     @Test
     public void passo5(){
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
     	cadastro.clicaBotaoSave();
     }
     

@@ -1,6 +1,7 @@
 package prova_sicredi;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -8,11 +9,14 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class CadastroCliente {
 
 	WebDriver driver;
+	WebDriverWait wait;
 	
 	
 	public CadastroCliente(WebDriver driver){
@@ -112,10 +116,8 @@ public class CadastroCliente {
      public CadastroCliente validarAssert(String mensagemValidacao){
     	 WebElement mensagemSucesso = driver.findElement(By.xpath("//*[@id='report-success']/p")); 
     	 String mensagem = mensagemSucesso.getText();
-    	 System.out.println(mensagem);
     	 String[] msg= mensagem.split("\\.");
     	 String   mensagemeditada= msg[0]; //Your data has been successfully stored into the database
-    	 System.out.println(mensagemeditada);
     	 Assert.assertEquals(mensagemeditada, mensagemValidacao);
     	 return this;    	 
      }
@@ -125,5 +127,57 @@ public class CadastroCliente {
     	 WebElement add_customer = driver.findElement(By.partialLinkText("Add Customer"));//linkText("https://www.grocerycrud.com/demo/bootstrap_theme_v4/add"));
          add_customer.click();
      }
+
      
+     public void botaoVoltar(){
+         WebElement voltar =  driver.findElement(By.linkText("Go back to list"));
+         voltar.click();
+     }
+     
+     public CadastroCliente clicaLupa(String name){
+    	 WebElement lupa = driver.findElement(By.xpath("//*[@id=\"gcrud-search-form\"]/div[1]/div[2]/a[3]"));
+    	 WebElement lupaPesquisa = lupa.findElement(By.tagName("input"));
+    	 WebElement refresh = driver.findElement(By.xpath("//*[@id='gcrud-search-form']/div[2]/table/thead/tr[2]/td[2]/div[2]/a"));
+         WebElement display = driver.findElement(By.xpath("//*[@id='gcrud-search-form']/div[3]/div[2]/ul/li[3]/span/input"));
+    	 WebElement checkbox =  driver.findElement(By.cssSelector("input.select-all-none"));    	
+         wait = new WebDriverWait(driver, 10);
+         wait.until(ExpectedConditions.visibilityOf(lupa));
+         lupa.click();
+         lupaPesquisa.sendKeys(name);
+         refresh.click();
+         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(checkbox)); 
+         return this;
+     }
+     
+     public void clicarCheckbox(){
+    	 WebElement checkbox1 =  driver.findElement(By.xpath("//*[@id='gcrud-search-form']/div[2]/table/tbody/tr/td[1]/input"));    	
+         wait.until(ExpectedConditions.elementToBeClickable(checkbox1));
+    	 checkbox1.click();
+     }
+ 
+     public void clicarBotaoDelete(){
+    	 WebElement botaoDelete = driver.findElement(By.xpath("//*[@id=\"gcrud-search-form\"]/div[2]/table/thead/tr[2]/td[2]/div[1]/a"));
+         botaoDelete.click();
+     }
+     
+     public void clicarBotaoDeletePopUp(){
+    	 WebElement botaoDeletePopUp = driver.findElement(By.xpath("/html/body/div[2]/div[2]/div[3]/div/div/div[3]/button[2]"));
+         botaoDeletePopUp.click();
+     }
+     
+     
+     public CadastroCliente ValidarDeleteItens(String mensagemValidacao1){
+    		WebElement mensagemSucessoDelete1 = driver.findElement(By.xpath("/html/body/div[2]/div[2]/div[3]/div/div/div[2]/p[2]"));
+            String mensagem = mensagemSucessoDelete1.getText();
+            Assert.assertEquals(mensagem, mensagemValidacao1); 
+            return this;
+     }
+     
+     public CadastroCliente ConfirmaDeleteItens(String mensagemValidacao2){
+    		WebElement mensagemSucessoDelete2 = driver.findElement(By.xpath("/html/body/div[3]/span/p"));
+            wait.until(ExpectedConditions.visibilityOf(mensagemSucessoDelete2));
+        	String mensagem = mensagemSucessoDelete2.getText(); 
+            Assert.assertEquals(mensagem, mensagemValidacao2); 
+            return this;
+     }
 }
