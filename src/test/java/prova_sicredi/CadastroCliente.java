@@ -140,18 +140,18 @@ public class CadastroCliente {
     	 WebElement refresh = driver.findElement(By.xpath("//*[@id='gcrud-search-form']/div[2]/table/thead/tr[2]/td[2]/div[2]/a"));
          WebElement display = driver.findElement(By.xpath("//*[@id='gcrud-search-form']/div[3]/div[2]/ul/li[3]/span/input"));
     	 WebElement checkbox =  driver.findElement(By.cssSelector("input.select-all-none"));    	
-         wait = new WebDriverWait(driver, 10);
+         wait = new WebDriverWait(driver, 10,1000);
          wait.until(ExpectedConditions.visibilityOf(lupa));
          lupa.click();
          lupaPesquisa.sendKeys(name);
          refresh.click();
-         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(checkbox)); 
+         //wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(checkbox)); 
+         wait.until(ExpectedConditions.textToBePresentInElementValue(By.cssSelector(".page-number-input"), "1"));
          return this;
      }
      
      public void clicarCheckbox(){
-    	 WebElement checkbox1 =  driver.findElement(By.xpath("//*[@id='gcrud-search-form']/div[2]/table/tbody/tr/td[1]/input"));    	
-         wait.until(ExpectedConditions.elementToBeClickable(checkbox1));
+    	 WebElement checkbox1 =  driver.findElement(By.cssSelector("div.container-fluid.gc-container:nth-child(10) div.row div.table-section div.table-container div.scroll-if-required table.table.table-bordered.grocery-crud-table.table-hover thead:nth-child(1) tr.filter-row.gc-search-row:nth-child(2) td.no-border-right:nth-child(1) div.floatL.t5 > input.select-all-none"));    	
     	 checkbox1.click();
      }
  
